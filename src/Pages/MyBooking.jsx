@@ -1,7 +1,17 @@
 import { Calendar, Clock, Users, X, Pencil, Coffee } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MyBookingsUI() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-[#FFF8DC] pt-[100px]">
       <div className="container mx-auto px-4 max-w-6xl">
@@ -41,20 +51,7 @@ export default function MyBookingsUI() {
                 <h3 className="text-xl font-bold text-[#6F4E37]">Table A1</h3>
                 <p className="text-sm text-gray-500">VIP Table</p>
               </div>
-              <span
-                className="
-  inline-flex
-  items-center
-  justify-center
-  min-w-[70px]
-  h-7
-  text-sm
-  rounded-full
-  bg-yellow-200
-  text-yellow-700
-  font-medium
-"
-              >
+              <span className=" inline-flex items-center justify-center min-w-[70px] h-7 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">
                 Pending
               </span>
               {/* <span className="px-2 py-1 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">

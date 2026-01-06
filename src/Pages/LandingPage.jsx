@@ -2,7 +2,6 @@ import { Users, Award, Calendar, Star, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "../Componants/Footer";
 
-
 export default function LandingPage() {
   return (
     <div className="w-full  pt-[70px]">
@@ -135,7 +134,6 @@ export default function LandingPage() {
           </h2>
 
           <div className="max-w-3xl mx-auto border-2  rounded-2xl shadow-2xl p-10">
-    
             <div className="flex justify-center mb-8">
               <div className="bg-[#F5F5DC] p-5 rounded-full">
                 <Clock className="w-12 h-12 text-[#6F4E37]" />
@@ -178,10 +176,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-<Footer/>
-
-
-
+      <Footer />
     </div>
   );
 }

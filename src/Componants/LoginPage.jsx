@@ -17,6 +17,7 @@ export default function LoginPage() {
       identifier: values.email,
       password: values.password,
     };
+
     axios
       .post(url, dataToSend)
       .then((res) => {
@@ -28,7 +29,7 @@ export default function LoginPage() {
           sessionStorage.setItem("token", token);
         }
         toast.success("Login Success");
-        navigate("/");
+        navigate("/bookTabel");
       })
       .catch((err) => {
         toast.error(err.response.data.error.message);
@@ -44,7 +45,7 @@ export default function LoginPage() {
     let token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
     if (token) {
-      navigate("/");
+      navigate("/bookTabel");
     }
   }, []);
 
@@ -123,99 +124,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-// import React, { useState } from 'react';
-// import { Link, useNavigate } from 'react-router-dom';
-// import { Coffee, Mail, Lock } from 'lucide-react';
-// // import { Button } from '../ui/Button';
-// // import { Input } from '../ui/Input';
-// // import { Card } from '../ui/Card';
-// // import { setCurrentUser, users } from '../../data/mockData';
-
-// export const Login = () => {
-//   const navigate = useNavigate();
-
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [errors, setErrors] = useState({});
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-
-//     const newErrors = {};
-//     if (!email) newErrors.email = 'Email is required';
-//     if (!password) newErrors.password = 'Password is required';
-
-//     if (Object.keys(newErrors).length > 0) {
-//       setErrors(newErrors);
-//       return;
-//     }
-
-//     // Mock authentication
-//     if (email === 'admin@cafe.com') {
-//       setCurrentUser(users[1]); // Admin user
-//       navigate('/admin');
-//     } else {
-//       setCurrentUser(users[0]); // Regular user
-//       navigate('/');
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-gradient-to-br from-[#FFF8DC] to-[#F5F5DC] flex items-center justify-center p-4">
-//       <Card className="w-full max-w-md">
-//         <div className="text-center mb-8">
-//           <div className="inline-flex items-center justify-center bg-primary p-3 rounded-full mb-4">
-//             <Coffee className="w-8 h-8 text-primary-foreground" />
-//           </div>
-//           <h2 className="text-2xl font-bold text-foreground">Welcome Back</h2>
-//           <p className="text-muted-foreground mt-2">
-//             Login to your Cozy Cafe account
-//           </p>
-//         </div>
-
-//         <form onSubmit={handleSubmit} className="space-y-4">
-//           <div className="relative">
-//             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-//             <Input
-//               type="email"
-//               placeholder="Email address"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//               error={errors.email}
-//               className="pl-10"
-//             />
-//           </div>
-
-//           <div className="relative">
-//             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-//             <Input
-//               type="password"
-//               placeholder="Password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               error={errors.password}
-//               className="pl-10"
-//             />
-//           </div>
-
-//           <Button type="submit" variant="primary" className="w-full">
-//             Login
-//           </Button>
-//         </form>
-
-//         <div className="mt-6 text-center space-y-2">
-//           <p className="text-sm text-muted-foreground">
-//             Don't have an account?{' '}
-//             <Link to="/register" className="text-primary hover:underline">
-//               Register here
-//             </Link>
-//           </p>
-//           <p className="text-xs text-muted-foreground">
-//             Demo: Use admin@cafe.com for admin or any email for user
-//           </p>
-//         </div>
-//       </Card>
-//     </div>
-//   );
-// };

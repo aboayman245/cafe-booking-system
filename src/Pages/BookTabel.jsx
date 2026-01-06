@@ -1,7 +1,18 @@
 import { Formik, Form, Field } from 'formik';
 import { Calendar, Clock, Users, Coffee, CircleCheck } from 'lucide-react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function BookingCalendar() {
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    let token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-[#FFF8DC] pt-24 pb-10">
       <div className="container mx-auto px-4 max-w-4xl">
