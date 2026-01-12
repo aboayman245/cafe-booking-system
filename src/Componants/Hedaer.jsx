@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 export default function Header() {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [loged, setLoged] = useState(true);
 
   const navigate = useNavigate();
 
@@ -14,9 +15,9 @@ export default function Header() {
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
     toast.success("Logout Success");
+    setLoged(false);
     navigate("/login");
   };
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > lastScrollY && window.scrollY > 400) {
@@ -49,6 +50,8 @@ export default function Header() {
       .get(url, basmga)
       .then((res) => {
         setUser(res.data);
+        setLoged(true);
+        console.log(res.data);
       })
       .catch((err) => {});
   }, []);
@@ -110,7 +113,7 @@ export default function Header() {
           </nav>
           {/* اسم اليوزر وي لو  كان عميل ولا ادمين */}
           <div className="hidden sm:block text-right text-black">
-            <p className="text-sm font-medium">{user?.username}</p>
+            <p className="text-sm font-medium">{loged && user?.username}</p>
             <p className="text-xs text-muted-foreground">Customer</p>
           </div>
           <NavLink to="/login">

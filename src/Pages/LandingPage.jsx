@@ -64,7 +64,7 @@ export default function LandingPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <div className="bg-white rounded-xl p-8 border-2 shadow-sm hover:shadow-xl transition">
+            <div className="bg-white rounded-xl p-8 border-2 shadow-sm hover:shadow-2xl transition">
               <div className="w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-[#FFF8DC]">
                 <Users className="w-8 h-8 text-[#6F4E37]" />
               </div>
@@ -94,7 +94,7 @@ export default function LandingPage() {
               </ul>
             </div>
 
-            <div className="bg-white border-2 h-[400px] rounded-xl p-8 shadow-sm hover:shadow-xl transition">
+            <div className="bg-white border-2 h-[400px] rounded-xl p-8 shadow-sm hover:shadow-2xl transition">
               <div className="w-16 h-16 mb-4 flex items-center justify-center rounded-full bg-[#6F4E37]">
                 <Award className="w-8 h-8 text-white" />
               </div>

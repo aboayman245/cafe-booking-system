@@ -1,10 +1,20 @@
+import axios from "axios";
 import { Calendar, Clock, Users, X, Pencil, Coffee } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function MyBookingsUI() {
+  const [cards, setCards] = useState([]);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    axios
+      .get("http://localhost:1337/" + "api/bookings")
+      .then((res) => {
+        setCards(res.data.data);
+        console.log(res.data.data);
+      })
+      .catch();
+  }, []);
   useEffect(() => {
     let token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
@@ -45,63 +55,32 @@ export default function MyBookingsUI() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition p-6">
-            <div className="flex justify-between mb-4">
-              <div>
-                <h3 className="text-xl font-bold text-[#6F4E37]">Table A1</h3>
-                <p className="text-sm text-gray-500">VIP Table</p>
+          {cards.map((el, index) => (
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition p-6">
+              <div className="flex justify-between mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-[#6F4E37]">Table B3</h3>
+                  <p className="text-sm text-gray-500">Normal Table</p>
+                </div>
+                <span className=" inline-flex items-center justify-center min-w-[70px] h-7 text-sm rounded-full bg-green-200 text-green-700 font-medium">
+                  Approved
+                </span>
               </div>
-              <span className=" inline-flex items-center justify-center min-w-[70px] h-7 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">
-                Pending
-              </span>
-              {/* <span className="px-2 py-1 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">
-                Pending
-              </span> */}
-            </div>
 
-            <div className="space-y-3 text-gray-700">
-              <Info icon={Calendar}>Friday, March 22, 2025</Info>
-              <Info icon={Clock}>8:00 PM</Info>
-              <Info icon={Users}>4 persons</Info>
-            </div>
-
-            <div className="mt-6 flex gap-3">
-              <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 border border-[#6F4E37] text-[#6F4E37] rounded-xl hover:bg-[#6F4E37]/10 transition">
-                <Pencil className="w-4 h-4" />
-                Reschedule
-              </button>
-
-              <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
-                <X className="w-4 h-4" />
-                Cancel
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition p-6">
-            <div className="flex justify-between mb-4">
-              <div>
-                <h3 className="text-xl font-bold text-[#6F4E37]">Table B3</h3>
-                <p className="text-sm text-gray-500">Normal Table</p>
+              <div className="space-y-3 text-gray-700">
+                <Info icon={Calendar}>{el.date}</Info>
+                <Info icon={Clock}>{el.time}</Info>
+                <Info icon={Users}>{el.persons} persons</Info>
               </div>
-              <span className=" inline-flex items-center justify-center min-w-[70px] h-7 text-sm rounded-full bg-green-200 text-green-700 font-medium">
-                Approved
-              </span>
-            </div>
 
-            <div className="space-y-3 text-gray-700">
-              <Info icon={Calendar}>Sunday, March 24, 2025</Info>
-              <Info icon={Clock}>6:00 PM</Info>
-              <Info icon={Users}>2 persons</Info>
+              <div className="mt-6">
+                <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
+                  <X className="w-4 h-4" />
+                  Cancel Booking
+                </button>
+              </div>
             </div>
-
-            <div className="mt-6">
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
-                <X className="w-4 h-4" />
-                Cancel Booking
-              </button>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
