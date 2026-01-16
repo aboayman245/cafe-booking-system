@@ -28,8 +28,7 @@ export default function LandingPage() {
             <button
               variant="primary"
               size="lg"
-              className="btn bg-[#6f4e37] border-0 rounded-2xl hover:bg-[#FF8C42]/90 text-white shadow-xl text-lg p-7"
-            >
+              className="btn bg-[#6f4e37] border-0 rounded-2xl hover:bg-[#FF8C42]/90 text-white shadow-xl text-lg p-7">
               <Calendar className="w-6 h-6 mr-2" />
               Book a Table Now
             </button>

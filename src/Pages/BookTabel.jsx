@@ -1,6 +1,6 @@
-import axios from "axios";
+// import axios from "axios";
 import { Formik, Form, Field } from "formik";
-import { Calendar, Clock, Users, Coffee, CircleCheck } from "lucide-react";
+import { Calendar, Clock, Users, Coffee, CircleCheck, Phone, UserPen,} from "lucide-react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,42 +12,47 @@ export default function BookingCalendar() {
   //     .then()
   //     .catch();
   // }, []);
+  // useEffect(() => {
+  //   let token =
+  //     localStorage.getItem("token") || sessionStorage.getItem("token");
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, []);
+
+  // const sendBookingToStrapi = async (values) => {
+  //   try {
+  //     const token =
+  //       localStorage.getItem("token") || sessionStorage.getItem("token");
+
+  //     await axios.post(
+  //       "http://localhost:1337/api/bookings",
+  //       {
+  //         data: {
+  //           date: values.date,
+  //           time: values.time,
+  //           persons: values.persons,
+  //           tableType: values.tableType,
+  //           status: "pending",
+  //         },
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.log("Booking Error:", error);
+  //   }
+  // };
+
   useEffect(() => {
-    let token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
-    if (!token) {
+    let hasLogged = localStorage.getItem("hasLogged") || sessionStorage.getItem('hasLogged')
+    if (hasLogged != "true") {
       navigate("/login");
     }
   }, []);
-
-  // 00000------000000000000---0000000000---000000000
-  const sendBookingToStrapi = async (values) => {
-    try {
-      const token =
-        localStorage.getItem("token") || sessionStorage.getItem("token");
-
-      await axios.post(
-        "http://localhost:1337/api/bookings",
-        {
-          data: {
-            date: values.date,
-            time: values.time,
-            persons: values.persons,
-            tableType: values.tableType,
-            status: "pending",
-          },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log("Booking Error:", error);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#FFF8DC] pt-24 pb-10">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -68,6 +73,8 @@ export default function BookingCalendar() {
               time: "",
               persons: 2,
               tableType: "normal",
+              phone: "",
+              usrname: "",
             }}
             onSubmit={async (values) => {
               await sendBookingToStrapi(values);
@@ -76,6 +83,41 @@ export default function BookingCalendar() {
           >
             {({ values, setFieldValue }) => (
               <Form className="space-y-8">
+                <div>
+                  <label className="flex items-center gap-3 mb-2 text-lg font-medium text-black">
+                    <UserPen className="w-6 h-6 text-[#6F4E37]" />
+                    Full Name
+                  </label>
+                  <Field
+                    type="text"
+                    name="usrname"
+                    placeholder="Enter your full name"
+                    className="w-full  border border-[#969493] rounded-xl px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-[#6F4E37]"
+                  />
+                </div>
+                <label className="flex items-center gap-3 mb-2 text-lg font-medium text-black">
+                  <Phone className="w-6 h-6 text-[#6F4E37]" />
+                  Phone Number
+                </label>
+
+                <Field name="phone">
+                  {({ field, form }) => (
+                    <input
+                      {...field}
+                      type="text"
+                      maxLength={11}
+                      placeholder="01xxxxxxxxx"
+                      className="w-full border border-[#969493] rounded-xl px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-[#6F4E37]"
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+                        if (value.length <= 11) {
+                          form.setFieldValue("phone", value);
+                        }
+                      }}
+                    />
+                  )}
+                </Field>
+
                 <div>
                   <label className="flex items-center gap-3 mb-2 text-lg font-medium text-black">
                     <Calendar className="w-6 h-6 text-[#6F4E37]" />
@@ -94,22 +136,7 @@ export default function BookingCalendar() {
                     Select Time
                   </label>
                   <div className="grid grid-cols-4 md:grid-cols-6 gap-3">
-                    {[
-                      "08:00",
-                      "09:00",
-                      "10:00",
-                      "11:00",
-                      "12:00",
-                      "13:00",
-                      "14:00",
-                      "15:00",
-                      "16:00",
-                      "17:00",
-                      "18:00",
-                      "19:00",
-                      "20:00",
-                      "21:00",
-                    ].map((time) => (
+                    {[ "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", ].map((time) => (
                       <button
                         key={time}
                         type="button"
@@ -117,9 +144,7 @@ export default function BookingCalendar() {
                         className={`px-4 py-2 rounded-xl border text-lg font-medium transition-all ${
                           values.time === time
                             ? "bg-[#6F4E37] text-white border-[#4B382A]"
-                            : "bg-white text-black border-[#969493] hover:bg-[#D1BFA7]"
-                        }`}
-                      >
+                            : "bg-white text-black border-[#969493] hover:bg-[#D1BFA7]"}`}>
                         {time}
                       </button>
                     ))}
@@ -140,8 +165,7 @@ export default function BookingCalendar() {
                           Math.max(1, values.persons - 1)
                         )
                       }
-                      className="px-5 py-2 border rounded-lg text-lg text-[#6F4E37] font-medium bg-white border-[#6F4E37] hover:bg-[#D1BFA7]"
-                    >
+                      className="px-5 py-2 border rounded-lg text-lg text-[#6F4E37] font-medium bg-white border-[#6F4E37] hover:bg-[#D1BFA7]">
                       -
                     </button>
 
@@ -157,8 +181,7 @@ export default function BookingCalendar() {
                           Math.min(10, values.persons + 1)
                         )
                       }
-                      className="px-5 py-2 border text-[#6F4E37] rounded-lg text-lg font-medium bg-white border-[#6F4E37] hover:bg-[#D1BFA7]"
-                    >
+                      className="px-5 py-2 border text-[#6F4E37] rounded-lg text-lg font-medium bg-white border-[#6F4E37] hover:bg-[#D1BFA7]">
                       +
                     </button>
                   </div>
@@ -178,9 +201,7 @@ export default function BookingCalendar() {
                         className={`p-5 rounded-xl border text-left text-lg font-medium transition-all ${
                           values.tableType === type
                             ? "bg-[#6F4E37] text-white border-[#6F4E37]"
-                            : "bg-white text-[#4B382A] border-[#6F4E37] hover:bg-[#D1BFA7]"
-                        }`}
-                      >
+                            : "bg-white text-[#4B382A] border-[#6F4E37] hover:bg-[#D1BFA7]"}`}>
                         <div className="flex justify-between mb-2">
                           <span className="font-semibold">
                             {type === "normal" ? "Normal Table" : "VIP Table"}
@@ -201,8 +222,7 @@ export default function BookingCalendar() {
 
                 <button
                   type="submit"
-                  className="w-full py-4 rounded-xl bg-[#6F4E37] text-white text-lg font-semibold hover:opacity-90 transition"
-                >
+                  className="w-full py-4 rounded-xl bg-[#6F4E37] text-white text-lg font-semibold hover:opacity-90 transition">
                   Confirm Booking
                 </button>
               </Form>

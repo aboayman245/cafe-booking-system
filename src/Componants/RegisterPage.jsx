@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
@@ -8,20 +7,20 @@ import { Coffee, Mail, Lock, User } from "lucide-react";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-
   const handellogin = (values) => {
-    let url = "http://localhost:1337/api/auth/local/register";
-
-    axios
-      .post(url, values)
-      .then((res) => {
-        sessionStorage.setItem("token", res.data.jwt);
-        toast.success("Register Success");
-        navigate("/bookTabel");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.error.message);
-      });
+    let isVerfied = true;
+    if (isVerfied) {
+      if (values.rememberIndex == true) {
+        localStorage.setItem("hasLogged", "true");
+      } else {
+        sessionStorage.setItem("hasLogged", "true");
+      }
+      toast.success("Login Success");
+      navigate("/bookTabel");
+    } else {
+      toast.error("wrong User Nmae Of Password");
+    }
+    console.log(values);
   };
 
   const test = Yup.object({
@@ -43,10 +42,8 @@ export default function RegisterPage() {
       <Formik
         onSubmit={handellogin}
         initialValues={{ username: "", email: "", password: "" }}
-        validationSchema={test}
-      >
+        validationSchema={test}>
         <Form className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-5 border">
-      
           <div className="text-center">
             <div className="inline-flex items-center justify-center bg-[#6f4e37] p-3 rounded-full mb-4">
               <Coffee className="w-8 h-8 text-white" />
@@ -64,14 +61,12 @@ export default function RegisterPage() {
             <Field
               name="username"
               placeholder="Full Name"
-              className="w-full pl-10 pr-3 py-2 rounded-lg bg-gray-200  focus:outline-none focus:ring-2 focus:ring-[#6f4e37] text-black"
-            />
+              className="w-full pl-10 pr-3 py-2 rounded-lg bg-gray-200  focus:outline-none focus:ring-2 focus:ring-[#6f4e37] text-black"/>
           </div>
           <ErrorMessage
             name="username"
             component="p"
-            className="text-red-500 text-sm mt-1"
-          />
+            className="text-red-500 text-sm mt-1"/>
 
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6f4e37]" />
@@ -79,16 +74,13 @@ export default function RegisterPage() {
               type="email"
               name="email"
               placeholder="Email Address"
-              className="w-full h-[10] p-10 pr-3 py-2 rounded-lg bg-gray-200  focus:outline-none focus:ring-2 focus:ring-[#6f4e37] text-black"
-            />
+              className="w-full h-[10] p-10 pr-3 py-2 rounded-lg bg-gray-200  focus:outline-none focus:ring-2 focus:ring-[#6f4e37] text-black"/>
           </div>
 
           <ErrorMessage
             name="email"
             component="p"
-            className="text-red-500 text-sm mt-1"
-          />
-
+            className="text-red-500 text-sm mt-1"/>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6f4e37]" />
             <Field
@@ -106,8 +98,7 @@ export default function RegisterPage() {
 
           <button
             type="submit"
-            className="w-full bg-[#6f4e37] text-white py-2 rounded-lg hover:opacity-90 transition"
-          >
+            className="w-full bg-[#6f4e37] text-white py-2 rounded-lg hover:opacity-90 transition">
             Register
           </button>
 

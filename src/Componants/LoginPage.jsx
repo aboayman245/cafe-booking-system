@@ -9,31 +9,47 @@ import { Coffee, Mail, Lock } from "lucide-react";
 export default function LoginPage() {
   const navigate = useNavigate();
 
-  const handellogin = (values) => {
-    let domain = "http://localhost:1337";
-    let endpoint = "/api/auth/local";
-    let url = domain + endpoint;
-    let dataToSend = {
-      identifier: values.email,
-      password: values.password,
-    };
+  // const handellogin = (values) => {
+  //   let domain = "http://localhost:1337";
+  //   let endpoint = "/api/auth/local";
+  //   let url = domain + endpoint;
+  //   let dataToSend = {
+  //     identifier: values.email,
+  //     password: values.password,
+  //   };
 
-    axios
-      .post(url, dataToSend)
-      .then((res) => {
-        let token = res.data.jwt;
-        // values.rememberIndex ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
-        if (values.rememberIndex) {
-          localStorage.setItem("token", token);
-        } else {
-          sessionStorage.setItem("token", token);
-        }
-        toast.success("Login Success");
-        navigate("/bookTabel");
-      })
-      .catch((err) => {
-        toast.error(err.response.data.error.message);
-      });
+  //   axios
+  //     .post(url, dataToSend)
+  //     .then((res) => {
+  //       let token = res.data.jwt;
+  //       // values.rememberIndex ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
+  //       if (values.rememberIndex) {
+  //         localStorage.setItem("token", token);
+  //       } else {
+  //         sessionStorage.setItem("token", token);
+  //       }
+  //       toast.success("Login Success");
+  //       navigate("/bookTabel");
+  //     })
+  //     .catch((err) => {
+  //       toast.error(err.response.data.error.message);
+  //     });
+  // };
+  const handellogin = (values) => {
+    let isVerfied = true;
+    if (isVerfied) {
+      // Naviagte Him to home page
+      if (values.rememberIndex == true) {
+        localStorage.setItem("hasLogged", "true");
+      } else {
+        sessionStorage.setItem("hasLogged", "true");
+      }
+      toast.success("Login Success");
+      navigate("/bookTabel");
+    } else {
+      toast.error("wrong User Nmae Of Password");
+    }
+    console.log(values);
   };
 
   const test = Yup.object({
@@ -64,7 +80,6 @@ export default function LoginPage() {
           <div className="text-center ">
             <div className="inline-flex items-center justify-center  bg-[#6f4e37]  p-3 rounded-full mb-4">
               <Coffee className="w-8 h-8 text-white" />
-            
             </div>
             <h1 className="text-4xl text-center">Welcom Back </h1>
             <p>Login to your OLIVIA Cafe account</p>
@@ -85,7 +100,7 @@ export default function LoginPage() {
             <Field
               type="password"
               name="password"
-              placeholder="Password" 
+              placeholder="Password"
               className="input input-bordered w-full pl-10 focus:pl-10 bg-gray-200 focus:outline-none focus:ring-2  focus:ring-[#6f4e37] rounded text-black"
             />
           </div>
@@ -104,10 +119,11 @@ export default function LoginPage() {
             />
             Remember Me
           </label>
+      
           <button className="btn bg-[#6f4e37] border-0 rounded-2xl w-full" type="submit">
             Login
           </button>
-       
+
           <div className=" text-center space-y-2">
             <p className="text-sm text-muted-foreground">
               Don't have an account?{" "}
